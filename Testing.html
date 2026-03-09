@@ -1,483 +1,830 @@
 <!-- this is testing file , this is not a actual project file code -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title >StartupGrave — The Graveyard of Ambition</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StartupGrave — The Graveyard of Ambition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Syne:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
 
-<!-- NAV OVERLAY (full-screen menu) -->
-<div class="nav-overlay" id="navOverlay">
-  <div class="nav-overlay-inner" style="display:grid;grid-template-columns:1fr 1fr;gap:60px;padding:100px 60px 60px;">
-    <div>
-      <div class="nav-overlay-links">
-        <button class="nav-overlay-link active-overlay" id="navOverlayHome" onclick="navigate('home');toggleMenu()">
-          <span class="nav-overlay-link-num">01</span>Home
-        </button>
-        <button class="nav-overlay-link" id="navOverlayGraveyard" onclick="navigate('graveyard');toggleMenu()">
-          <span class="nav-overlay-link-num">02</span>The Graveyard
-        </button>
-        <button class="nav-overlay-link" id="navOverlayAbout" onclick="navigate('about');toggleMenu()">
-          <span class="nav-overlay-link-num">03</span>About
-        </button>
-        <button class="nav-overlay-link" onclick="openModal();toggleMenu()">
-          <span class="nav-overlay-link-num">04</span>Contribute
-        </button>
+  <!-- NAV OVERLAY (full-screen menu) -->
+  <div class="nav-overlay" id="navOverlay">
+    <div class="nav-overlay-inner" style="display:grid;grid-template-columns:1fr 1fr;gap:60px;padding:100px 60px 60px;">
+      <div>
+        <div class="nav-overlay-links">
+          <button class="nav-overlay-link active-overlay" id="navOverlayHome" onclick="navigate('home');toggleMenu()">
+            <span class="nav-overlay-link-num">01</span>Home
+          </button>
+          <button class="nav-overlay-link" id="navOverlayGraveyard" onclick="navigate('graveyard');toggleMenu()">
+            <span class="nav-overlay-link-num">02</span>The Graveyard
+          </button>
+          <button class="nav-overlay-link" id="navOverlayAbout" onclick="navigate('about');toggleMenu()">
+            <span class="nav-overlay-link-num">03</span>About
+          </button>
+          <button class="nav-overlay-link" onclick="openModal();toggleMenu()">
+            <span class="nav-overlay-link-num">04</span>Contribute
+          </button>
+        </div>
+        <div class="nav-overlay-bottom"
+          style="margin-top:40px;border-top:1px solid rgba(255,255,255,.06);padding-top:28px;flex-direction:column;align-items:flex-start;gap:16px;">
+          <span class="nav-overlay-tagline">The Graveyard of Ambition · Est. 2024</span>
+          <button class="nav-overlay-cta" onclick="openModal();toggleMenu()">
+            <svg viewBox="0 0 24 24" stroke-width="2" width="12" height="12" fill="none" stroke="white">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="16" />
+              <line x1="8" y1="12" x2="16" y2="12" />
+            </svg>
+            Submit a Startup
+          </button>
+        </div>
       </div>
-      <div class="nav-overlay-bottom" style="margin-top:40px;border-top:1px solid rgba(255,255,255,.06);padding-top:28px;flex-direction:column;align-items:flex-start;gap:16px;">
-        <span class="nav-overlay-tagline">The Graveyard of Ambition · Est. 2024</span>
-        <button class="nav-overlay-cta" onclick="openModal();toggleMenu()">
-          <svg viewBox="0 0 24 24" stroke-width="2" width="12" height="12" fill="none" stroke="white"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-          Submit a Startup
-        </button>
+      <div style="padding-top:8px;">
+        <div
+          style="font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.06);">
+          Recently Buried
+        </div>
+        <div id="navOverlayStartupList" style="display:flex;flex-direction:column;gap:0;"></div>
       </div>
     </div>
-    <div style="padding-top:8px;">
-      <div style="font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.06);">
-        Recently Buried
-      </div>
-      <div id="navOverlayStartupList" style="display:flex;flex-direction:column;gap:0;"></div>
-    </div>
-  </div>
-  <div class="nav-overlay-brand">STARTUP<br>GRAVE</div>
-</div>
-
-<!-- NAV -->
-<nav id="mainNav">
-  <a class="nav-logo" href="#" onclick="navigate('home');return false;">
-    <div class="nav-logo-wordmark">
-      <span class="wm-startup">STARTUP</span><span class="wm-grave">GRAVE</span>
-    </div>
-    <div class="nav-logo-sep"></div>
-    <span class="nav-logo-sub">The Graveyard<br>of Ambition</span>
-  </a>
-  <div class="nav-links">
-    <button class="nav-link active-nav" id="navHome" onclick="navigate('home')">Home</button>
-    <button class="nav-link" id="navGraveyard" onclick="navigate('graveyard')">The Graveyard</button>
-    <button class="nav-link" id="navAbout" onclick="navigate('about')">About</button>
-  </div>
-  <div class="nav-right">
-    <button class="nav-cta" onclick="openModal()">
-      <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-      Contribute
-    </button>
-    <button class="nav-hamburger" id="navHamburger" onclick="toggleMenu()">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
-
-<!-- ═══════════ HOME ═══════════ -->
-<div id="home-page" class="page active">
-  <section class="home-hero">
-    <div class="hero-ghost">FAIL</div>
-    <div class="hero-eyebrow">Rest in Peace · Est. 2024</div>
-    <h1 class="hero-title">The Graveyard<br><span class="dim">of Ambition</span></h1>
-    <p class="hero-subtitle">"Failures are finger posts on the road to achievement."</p>
-    <div class="hero-cta-row">
-      <button class="btn-primary" onclick="navigate('graveyard')">Browse the Graveyard</button>
-      <button class="btn-secondary" onclick="openModal()">Share Your Story</button>
-    </div>
-    <div class="hero-scroll">
-      <span>Scroll to explore</span>
-      <div class="scroll-line"></div>
-    </div>
-  </section>
-
-  <div class="stats-bar">
-    <div class="stat-item"><div class="stat-num" id="c1">0</div><div class="stat-label">Startups Documented</div></div>
-    <div class="stat-item"><div class="stat-num" id="c2">$0B</div><div class="stat-label">Combined Funding Lost</div></div>
-    <div class="stat-item"><div class="stat-num" id="c3">0</div><div class="stat-label">Founder Lessons Shared</div></div>
-    <div class="stat-item"><div class="stat-num" id="c4">0</div><div class="stat-label">Industries Covered</div></div>
+    <div class="nav-overlay-brand">STARTUP<br>GRAVE</div>
   </div>
 
-  <div class="marquee-section"><div class="marquee-track" id="marqueeTrack"></div></div>
+  <!-- NAV -->
+  <nav id="mainNav">
+    <a class="nav-logo" href="#" onclick="navigate('home');return false;">
+      <div class="nav-logo-wordmark">
+        <span class="wm-startup">STARTUP</span><span class="wm-grave">GRAVE</span>
+      </div>
+      <div class="nav-logo-sep"></div>
+      <span class="nav-logo-sub">The Graveyard<br>of Ambition</span>
+    </a>
+    <div class="nav-links">
+      <button class="nav-link active-nav" id="navHome" onclick="navigate('home')">Home</button>
+      <button class="nav-link" id="navGraveyard" onclick="navigate('graveyard')">The Graveyard</button>
+      <button class="nav-link" id="navAbout" onclick="navigate('about')">About</button>
+    </div>
+    <div class="nav-right">
+      <button class="nav-cta" onclick="openModal()">
+        <svg viewBox="0 0 24 24" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="16" />
+          <line x1="8" y1="12" x2="16" y2="12" />
+        </svg>
+        Contribute
+      </button>
+      <button class="nav-hamburger" id="navHamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
 
-  <section class="about-section">
-    <div class="about-left">
-      <div class="about-label">What is StartupGrave?</div>
-      <h2 class="about-heading">We Document the Failures Everyone Ignores</h2>
-      <div class="about-divider"></div>
-      <div class="about-body">
-        <p>The startup world is obsessed with success stories — unicorns, IPOs, billion-dollar exits. But <strong>90% of startups fail</strong>, and almost nobody talks about what actually went wrong.</p>
-        <p>StartupGrave is the world's most comprehensive library of startup post-mortems. We document real companies that raised real money, built real teams — and then fell. Not to mock them, but to <strong>learn from them</strong>.</p>
-        <p>Every collapse is a masterclass in what not to do. Our mission is to make those lessons accessible, searchable, and actionable for the next generation of founders — before they repeat the same costly mistakes.</p>
+  <!-- ═══════════ HOME ═══════════ -->
+  <div id="home-page" class="page active">
+    <section class="home-hero">
+      <div class="hero-ghost">FAIL</div>
+      <div class="hero-eyebrow">Rest in Peace · Est. 2024</div>
+      <h1 class="hero-title">The Graveyard<br><span class="dim">of Ambition</span></h1>
+      <p class="hero-subtitle">"Failures are finger posts on the road to achievement."</p>
+      <div class="hero-cta-row">
+        <button class="btn-primary" onclick="navigate('graveyard')">Browse the Graveyard</button>
+        <button class="btn-secondary" onclick="openModal()">Share Your Story</button>
+      </div>
+      <div class="hero-scroll">
+        <span>Scroll to explore</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-num" id="c1">0</div>
+        <div class="stat-label">Startups Documented</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="c2">$0B</div>
+        <div class="stat-label">Combined Funding Lost</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="c3">0</div>
+        <div class="stat-label">Founder Lessons Shared</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="c4">0</div>
+        <div class="stat-label">Industries Covered</div>
       </div>
     </div>
-    <div class="about-right">
-      <div class="about-card">
-        <div class="about-card-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div class="about-card-title">Anonymous &amp; Safe to Submit</div>
-        <div class="about-card-text">Founders submit their stories fully anonymously. No judgment, no naming and shaming — just raw, honest accounts of what went wrong and why.</div>
-      </div>
-      <div class="about-card">
-        <div class="about-card-icon"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-        <div class="about-card-title">Searchable by Industry &amp; Cause</div>
-        <div class="about-card-text">Filter by category, root cause, funding raised, or year closed. Find patterns across industries and spot warning signs before they hit your company.</div>
-      </div>
-      <div class="about-card">
-        <div class="about-card-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>
-        <div class="about-card-title">Real Lessons, Not Platitudes</div>
-        <div class="about-card-text">Every entry includes a "What I'd Do Differently" section — specific, actionable insights from people who lived through the failure and came out the other side wiser.</div>
-      </div>
+
+    <div class="marquee-section">
+      <div class="marquee-track" id="marqueeTrack"></div>
     </div>
-  </section>
 
-  <section class="how-section">
-    <div class="how-inner">
-      <div class="section-label">How It Works</div>
-      <h2 class="section-title">Built for Founders, by Founders</h2>
-      <div class="how-grid">
-        <div class="how-step">
-          <div class="how-step-num">01</div>
-          <div class="how-step-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
-          <div class="how-step-title">Submit a Post-Mortem</div>
-          <div class="how-step-text">Founders, ex-employees, or investors submit failure accounts. Submissions are reviewed for factual accuracy and published with the submitter's chosen level of anonymity.</div>
-        </div>
-        <div class="how-step">
-          <div class="how-step-num">02</div>
-          <div class="how-step-icon"><svg viewBox="0 0 24 24" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-          <div class="how-step-title">We Verify &amp; Structure</div>
-          <div class="how-step-text">Our editorial team cross-references public records, press coverage, and investor statements to build a structured, unbiased account of each collapse.</div>
-        </div>
-        <div class="how-step">
-          <div class="how-step-num">03</div>
-          <div class="how-step-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
-          <div class="how-step-title">The Community Learns</div>
-          <div class="how-step-text">Published post-mortems become searchable resources. Founders access real-world lessons, business schools use our library for case studies, and the ecosystem gets smarter.</div>
+    <section class="about-section">
+      <div class="about-left">
+        <div class="about-label">What is StartupGrave?</div>
+        <h2 class="about-heading">We Document the Failures Everyone Ignores</h2>
+        <div class="about-divider"></div>
+        <div class="about-body">
+          <p>The startup world is obsessed with success stories — unicorns, IPOs, billion-dollar exits. But <strong>90%
+              of startups fail</strong>, and almost nobody talks about what actually went wrong.</p>
+          <p>StartupGrave is the world's most comprehensive library of startup post-mortems. We document real companies
+            that raised real money, built real teams — and then fell. Not to mock them, but to <strong>learn from
+              them</strong>.</p>
+          <p>Every collapse is a masterclass in what not to do. Our mission is to make those lessons accessible,
+            searchable, and actionable for the next generation of founders — before they repeat the same costly
+            mistakes.</p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="mission-section">
-    <div class="mission-inner">
-      <div class="mission-eyebrow">Our Mission</div>
-      <p class="mission-quote">"The only real mistake is the one from which we learn nothing."</p>
-      <div class="mission-attr">— Henry Ford</div>
-      <div class="mission-divider"></div>
-      <p class="mission-body">StartupGrave exists because the startup ecosystem needs an honest mirror. Every founder who reads a post-mortem before raising their first round is a founder better equipped to survive. We are building the most complete, candid, and compassionate failure library ever assembled — because the world needs more companies to succeed, and that starts with understanding why others didn't.</p>
-    </div>
-  </section>
-
-  <section class="categories-section">
-    <div class="categories-inner">
-      <div class="section-label">Browse by Industry</div>
-      <h2 class="section-title">Find Failures In Your Space</h2>
-      <div class="categories-grid">
-        <div class="cat-pill" onclick="navigate('graveyard','SaaS')"><div class="cat-dot"></div><div class="cat-pill-name">SaaS / Software</div><div class="cat-pill-count">38</div></div>
-        <div class="cat-pill" onclick="navigate('graveyard','Health')"><div class="cat-dot"></div><div class="cat-pill-name">Health Tech</div><div class="cat-pill-count">24</div></div>
-        <div class="cat-pill" onclick="navigate('graveyard','Entertainment')"><div class="cat-dot"></div><div class="cat-pill-name">Entertainment</div><div class="cat-pill-count">19</div></div>
-        <div class="cat-pill" onclick="navigate('graveyard','Retail')"><div class="cat-dot"></div><div class="cat-pill-name">Retail / E-Commerce</div><div class="cat-pill-count">31</div></div>
-        <div class="cat-pill" onclick="navigate('graveyard','Hardware')"><div class="cat-dot"></div><div class="cat-pill-name">Hardware</div><div class="cat-pill-count">17</div></div>
-        <div class="cat-pill" onclick="navigate('graveyard','Finance')"><div class="cat-dot"></div><div class="cat-pill-name">FinTech</div><div class="cat-pill-count">22</div></div>
-        <div class="cat-pill" onclick="navigate('graveyard','Transport')"><div class="cat-dot"></div><div class="cat-pill-name">Transport / Mobility</div><div class="cat-pill-count">15</div></div>
-        <div class="cat-pill" onclick="navigate('graveyard','Real Estate')"><div class="cat-dot"></div><div class="cat-pill-name">Real Estate / Proptech</div><div class="cat-pill-count">11</div></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="home-cta-section">
-    <div class="section-label">Ready to Contribute?</div>
-    <h2 class="home-cta-title">Share Your Failure Story</h2>
-    <p class="home-cta-sub">If you've built and lost, your experience is more valuable than any success story. Help future founders avoid the pitfalls you faced.</p>
-    <div class="home-cta-buttons">
-      <button class="btn-primary" onclick="openModal()">Submit a Post-Mortem</button>
-      <button class="btn-secondary" onclick="navigate('graveyard')">Browse the Graveyard</button>
-    </div>
-  </section>
-
-  <footer>
-    <div class="footer-logo">STARTUP<span>GRAVE</span></div>
-    <div class="footer-links">
-      <button class="footer-link" onclick="navigate('home')">Home</button>
-      <button class="footer-link" onclick="navigate('graveyard')">Graveyard</button>
-      <button class="footer-link" onclick="openModal()">Submit</button>
-    </div>
-    <div class="footer-copy">© 2026 StartupGrave — Documenting failure so the next generation can succeed. All data sourced from public records and anonymous founder submissions.</div>
-  </footer>
-</div>
-
-<!-- ═══════════ GRAVEYARD ═══════════ -->
-<div id="graveyard-page" class="page">
-  <div class="graveyard-hero">
-    <div class="gh-inner">
-      <div class="gh-eyebrow">The Archive</div>
-      <h1 class="gh-title">THE GRAVEYARD</h1>
-    </div>
-    <!-- Search & Filter floated right inside hero -->
-    <div style="position:absolute;bottom:32px;right:60px;display:flex;align-items:center;gap:12px;z-index:2;">
-      <div class="search-box" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.12);min-width:240px;">
-        <svg viewBox="0 0 24 24" stroke-width="2" style="stroke:rgba(255,255,255,.3)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" placeholder="Search company, cause…" id="searchInput" oninput="filterCards()" style="color:white;" >
-      </div>
-      <select class="filter-select" id="categoryFilter" onchange="filterCards()" style="background:#1a1a1a;color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.12);">
-        <option value="">All Categories</option>
-        <option value="Real Estate">Real Estate</option>
-        <option value="Entertainment">Entertainment</option>
-        <option value="Automotive">Automotive</option>
-        <option value="Hardware">Hardware</option>
-        <option value="Health">Health Tech</option>
-        <option value="Retail">Retail</option>
-        <option value="Transport">Transport</option>
-        <option value="Finance">Finance</option>
-        <option value="SaaS">SaaS</option>
-        <option value="Social">Social Media</option>
-        <option value="Food">Food Tech</option>
-      </select>
-      <span class="result-count" id="resultCount" style="color:rgba(255,255,255,.35);">Showing 18 entries</span>
-    </div>
-  </div>
-
-  <!-- TWO-COL LIST -->
-  <div class="gy-list-outer" id="graveyardListOuter">
-    <!-- Rendered by JS -->
-  </div>
-
-  <footer>
-    <div class="footer-logo">STARTUP<span>GRAVE</span></div>
-    <div class="footer-links">
-      <button class="footer-link" onclick="navigate('home')">Home</button>
-      <button class="footer-link" onclick="navigate('graveyard')">Graveyard</button>
-      <button class="footer-link" onclick="openModal()">Submit</button>
-    </div>
-    <div class="footer-copy">© 2026 StartupGrave.</div>
-  </footer>
-</div>
-
-<!-- ═══════════ ABOUT ═══════════ -->
-<div id="about-page" class="page">
-
-  <!-- HERO -->
-  <section class="ab-hero">
-    <div class="ab-hero-grid"></div>
-    <div class="ab-hero-glow"></div>
-    <div class="ab-hero-ghost">FAIL</div>
-    <div class="ab-hero-content">
-      <div class="ab-hero-eyebrow">Est. 2024 · Open Archive</div>
-      <h1 class="ab-hero-title">ABOUT<br><span class="ab-dim">STARTUP</span><br>GRAVE</h1>
-      <p class="ab-hero-sub">"The graveyard of ambition is also the library of wisdom. Every failure contains a lesson no business school will teach you."</p>
-      <div class="ab-hero-divider"></div>
-    </div>
-  </section>
-
-  <!-- MISSION -->
-  <section>
-    <div class="ab-mission">
-      <div class="ab-mission-left">
-        <div class="ab-mission-label">Our Mission</div>
-        <h2 class="ab-mission-title">WHY WE DOCUMENT FAILURE</h2>
-        <div class="ab-mission-bar"></div>
-        <div class="ab-mission-text">
-          <p>Every year, thousands of startups raise hundreds of millions of dollars, hire brilliant people, and pursue audacious visions — and then quietly disappear. Their stories are told in press releases and post-mortems that vanish into the internet, leaving the next generation of founders to repeat the same fatal mistakes.</p>
-          <p><strong>StartupGrave exists to change that.</strong> We believe that failure is the most undervalued asset in the startup ecosystem. The lessons embedded in each collapse — the governance failures, the unit economics blindspots, the timing miscalculations — are worth more than any MBA curriculum.</p>
-          <p>We are not here to mock the fallen. We are here to honour them with the only tribute that matters: <strong>making sure their mistakes are never repeated.</strong></p>
+      <div class="about-right">
+        <div class="about-card">
+          <div class="about-card-icon"><svg viewBox="0 0 24 24" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg></div>
+          <div class="about-card-title">Anonymous &amp; Safe to Submit</div>
+          <div class="about-card-text">Founders submit their stories fully anonymously. No judgment, no naming and
+            shaming — just raw, honest accounts of what went wrong and why.</div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon"><svg viewBox="0 0 24 24" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg></div>
+          <div class="about-card-title">Searchable by Industry &amp; Cause</div>
+          <div class="about-card-text">Filter by category, root cause, funding raised, or year closed. Find patterns
+            across industries and spot warning signs before they hit your company.</div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon"><svg viewBox="0 0 24 24" stroke-width="2">
+              <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" />
+            </svg></div>
+          <div class="about-card-title">Real Lessons, Not Platitudes</div>
+          <div class="about-card-text">Every entry includes a "What I'd Do Differently" section — specific, actionable
+            insights from people who lived through the failure and came out the other side wiser.</div>
         </div>
       </div>
-      <div class="ab-mission-right">
-        <div class="ab-mission-card" id="abmc-1">
-          <div class="ab-mc-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-          <div class="ab-mc-title">Radical Transparency</div>
-          <div class="ab-mc-text">We publish what really happened — not the sanitised version. Real mistakes, real consequences, real lessons.</div>
-        </div>
-        <div class="ab-mission-card" id="abmc-2">
-          <div class="ab-mc-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div class="ab-mc-title">Anonymity First</div>
-          <div class="ab-mc-text">Founders, employees and investors can submit stories completely anonymously. No names, no blame — just truth.</div>
-        </div>
-        <div class="ab-mission-card" id="abmc-3">
-          <div class="ab-mc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg></div>
-          <div class="ab-mc-title">Open to All</div>
-          <div class="ab-mc-text">This archive belongs to the founder community. Free to read, free to contribute, forever.</div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- NUMBERS -->
-  <section class="ab-numbers">
-    <div class="ab-numbers-inner">
-      <div class="ab-numbers-header">
-        <div class="ab-numbers-eyebrow">The Scale of Failure</div>
-        <div class="ab-numbers-title">The Graveyard in Numbers</div>
-      </div>
-      <div class="ab-numbers-grid">
-        <div class="ab-num-card" id="abnum-1">
-          <div class="ab-num-value" id="abN1">0</div>
-          <div class="ab-num-label">Companies Documented</div>
-          <div class="ab-num-sub">and counting</div>
-        </div>
-        <div class="ab-num-card" id="abnum-2">
-          <div class="ab-num-value">$<span id="abN2">0</span>B</div>
-          <div class="ab-num-label">Combined Capital Lost</div>
-          <div class="ab-num-sub">investor & founder capital</div>
-        </div>
-        <div class="ab-num-card" id="abnum-3">
-          <div class="ab-num-value" id="abN3">0</div>
-          <div class="ab-num-label">Lessons Extracted</div>
-          <div class="ab-num-sub">from every postmortem</div>
-        </div>
-        <div class="ab-num-card" id="abnum-4">
-          <div class="ab-num-value" id="abN4">0</div>
-          <div class="ab-num-label">Industries Covered</div>
-          <div class="ab-num-sub">from SaaS to hardware</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
-  <section class="ab-how">
-    <div class="ab-how-inner">
-      <div class="ab-how-header">
-        <div class="ab-how-eyebrow">The Process</div>
-        <div class="ab-how-title">How We Work</div>
-      </div>
-      <div class="ab-how-grid">
-        <div class="ab-how-step" id="abhow-1">
-          <div class="ab-how-step-num">01</div>
-          <div class="ab-how-step-icon"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
-          <div class="ab-how-step-title">Submit a Story</div>
-          <div class="ab-how-step-text">Founders, employees, and investors submit failure stories through our anonymous intake form. No attribution required — only honesty.</div>
-        </div>
-        <div class="ab-how-step" id="abhow-2">
-          <div class="ab-how-step-num">02</div>
-          <div class="ab-how-step-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-          <div class="ab-how-step-title">Research & Verify</div>
-          <div class="ab-how-step-text">We cross-reference submissions against public records, SEC filings, news archives, and court documents to build an accurate picture.</div>
-        </div>
-        <div class="ab-how-step" id="abhow-3">
-          <div class="ab-how-step-num">03</div>
-          <div class="ab-how-step-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
-          <div class="ab-how-step-title">Publish & Preserve</div>
-          <div class="ab-how-step-text">Every entry is structured around The Hype, The Mistake, and What I'd Do Differently — so every lesson is extractable and actionable.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- MANIFESTO -->
-  <section class="ab-manifesto">
-    <div class="ab-manifesto-inner">
-      <div class="ab-manifesto-eyebrow">The Manifesto</div>
-      <div class="ab-manifesto-quote" id="abManifesto1">
-        "Failures are finger posts on the road to achievement. Every headstone in this graveyard marks a path someone walked so you don't have to walk it blindly."
-      </div>
-      <div class="ab-manifesto-divider"></div>
-      <div class="ab-manifesto-body" id="abManifesto2">
-        We live in a culture that celebrates the unicorn and erases the carcass. TechCrunch writes about the billion-dollar raise; nobody writes the obituary. <strong>We write the obituary.</strong> Not to punish those who tried, but because every cautionary tale is worth more than a thousand success stories to the next founder staring at a pitch deck at midnight. The startup graveyard is not a place of shame. <strong>It is a library. Use it.</strong>
-      </div>
-    </div>
-  </section>
-
-  <!-- VALUES -->
-  <section class="ab-values">
-    <div class="ab-values-inner">
-      <div class="ab-values-header">
-        <div>
-          <div class="ab-values-eyebrow">What We Stand For</div>
-          <div class="ab-values-title">Our Values</div>
-        </div>
-      </div>
-      <div class="ab-values-grid">
-        <div class="ab-value-item" id="abval-1">
-          <div class="ab-value-num">01</div>
-          <div class="ab-value-content">
-            <div class="ab-value-title">Failure Is Data</div>
-            <div class="ab-value-text">Every collapse contains signal. We treat each failure as a structured dataset — extracting root causes, patterns, and preventable decisions that others can learn from.</div>
+    <section class="how-section">
+      <div class="how-inner">
+        <div class="section-label">How It Works</div>
+        <h2 class="section-title">Built for Founders, by Founders</h2>
+        <div class="how-grid">
+          <div class="how-step">
+            <div class="how-step-num">01</div>
+            <div class="how-step-icon"><svg viewBox="0 0 24 24" stroke-width="2">
+                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg></div>
+            <div class="how-step-title">Submit a Post-Mortem</div>
+            <div class="how-step-text">Founders, ex-employees, or investors submit failure accounts. Submissions are
+              reviewed for factual accuracy and published with the submitter's chosen level of anonymity.</div>
           </div>
-        </div>
-        <div class="ab-value-item" id="abval-2">
-          <div class="ab-value-num">02</div>
-          <div class="ab-value-content">
-            <div class="ab-value-title">No Shame, Only Lessons</div>
-            <div class="ab-value-text">We never mock the fallen. Trying and failing is the most honourable thing a founder can do. We document without judgement and preserve without malice.</div>
+          <div class="how-step">
+            <div class="how-step-num">02</div>
+            <div class="how-step-icon"><svg viewBox="0 0 24 24" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+              </svg></div>
+            <div class="how-step-title">We Verify &amp; Structure</div>
+            <div class="how-step-text">Our editorial team cross-references public records, press coverage, and investor
+              statements to build a structured, unbiased account of each collapse.</div>
           </div>
-        </div>
-        <div class="ab-value-item" id="abval-3">
-          <div class="ab-value-num">03</div>
-          <div class="ab-value-content">
-            <div class="ab-value-title">Radical Honesty</div>
-            <div class="ab-value-text">Sanitised post-mortems help nobody. We push past the press release narrative to the actual sequence of decisions that led to the end. Uncomfortable truths included.</div>
-          </div>
-        </div>
-        <div class="ab-value-item" id="abval-4">
-          <div class="ab-value-num">04</div>
-          <div class="ab-value-content">
-            <div class="ab-value-title">Community Owned</div>
-            <div class="ab-value-text">This archive is built by the community it serves. Founders, operators, and investors who lived through these stories are its most important contributors.</div>
+          <div class="how-step">
+            <div class="how-step-num">03</div>
+            <div class="how-step-icon"><svg viewBox="0 0 24 24" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+              </svg></div>
+            <div class="how-step-title">The Community Learns</div>
+            <div class="how-step-text">Published post-mortems become searchable resources. Founders access real-world
+              lessons, business schools use our library for case studies, and the ecosystem gets smarter.</div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CTA -->
-  <section class="ab-cta">
-    <div class="ab-cta-eyebrow">Join the Archive</div>
-    <h2 class="ab-cta-title" id="abCta">KNOW A<br>STORY?</h2>
-    <p class="ab-cta-sub">Every failure deserves to be documented. Submit anonymously and help the next generation of founders learn before they burn.</p>
-    <div class="ab-cta-buttons">
-      <button class="btn-primary" onclick="openModal()">Submit a Failure</button>
-      <button class="btn-secondary" onclick="navigate('graveyard')">Browse the Graveyard</button>
-    </div>
-  </section>
+    <section class="mission-section">
+      <div class="mission-inner">
+        <div class="mission-eyebrow">Our Mission</div>
+        <p class="mission-quote">"The only real mistake is the one from which we learn nothing."</p>
+        <div class="mission-attr">— Henry Ford</div>
+        <div class="mission-divider"></div>
+        <p class="mission-body">StartupGrave exists because the startup ecosystem needs an honest mirror. Every founder
+          who reads a post-mortem before raising their first round is a founder better equipped to survive. We are
+          building the most complete, candid, and compassionate failure library ever assembled — because the world needs
+          more companies to succeed, and that starts with understanding why others didn't.</p>
+      </div>
+    </section>
 
-  <footer>
-    <div class="footer-logo">STARTUP<span>GRAVE</span></div>
-    <div class="footer-links">
-      <button class="footer-link" onclick="navigate('home')">Home</button>
-      <button class="footer-link" onclick="navigate('graveyard')">Graveyard</button>
-      <button class="footer-link" onclick="navigate('about')">About</button>
-    </div>
-    <div class="footer-copy">© 2026 StartupGrave.</div>
-  </footer>
-</div>
+    <section class="categories-section">
+      <div class="categories-inner">
+        <div class="section-label">Browse by Industry</div>
+        <h2 class="section-title">Find Failures In Your Space</h2>
+        <div class="categories-grid">
+          <div class="cat-pill" onclick="navigate('graveyard','SaaS')">
+            <div class="cat-dot"></div>
+            <div class="cat-pill-name">SaaS / Software</div>
+            <div class="cat-pill-count">38</div>
+          </div>
+          <div class="cat-pill" onclick="navigate('graveyard','Health')">
+            <div class="cat-dot"></div>
+            <div class="cat-pill-name">Health Tech</div>
+            <div class="cat-pill-count">24</div>
+          </div>
+          <div class="cat-pill" onclick="navigate('graveyard','Entertainment')">
+            <div class="cat-dot"></div>
+            <div class="cat-pill-name">Entertainment</div>
+            <div class="cat-pill-count">19</div>
+          </div>
+          <div class="cat-pill" onclick="navigate('graveyard','Retail')">
+            <div class="cat-dot"></div>
+            <div class="cat-pill-name">Retail / E-Commerce</div>
+            <div class="cat-pill-count">31</div>
+          </div>
+          <div class="cat-pill" onclick="navigate('graveyard','Hardware')">
+            <div class="cat-dot"></div>
+            <div class="cat-pill-name">Hardware</div>
+            <div class="cat-pill-count">17</div>
+          </div>
+          <div class="cat-pill" onclick="navigate('graveyard','Finance')">
+            <div class="cat-dot"></div>
+            <div class="cat-pill-name">FinTech</div>
+            <div class="cat-pill-count">22</div>
+          </div>
+          <div class="cat-pill" onclick="navigate('graveyard','Transport')">
+            <div class="cat-dot"></div>
+            <div class="cat-pill-name">Transport / Mobility</div>
+            <div class="cat-pill-count">15</div>
+          </div>
+          <div class="cat-pill" onclick="navigate('graveyard','Real Estate')">
+            <div class="cat-dot"></div>
+            <div class="cat-pill-name">Real Estate / Proptech</div>
+            <div class="cat-pill-count">11</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<!-- ═══════════ DETAIL ═══════════ -->
-<div id="detail-page" class="page">
-  <div id="detail-progress"></div>
-  <div id="detailHero"></div>
-  <div id="detailBody"></div>
-  <section class="dh-related" id="detailRelated" style="display:none"></section>
-  <footer>
-    <div class="footer-logo">STARTUP<span>GRAVE</span></div>
-    <div class="footer-links">
-      <button class="footer-link" onclick="navigate('home')">Home</button>
-      <button class="footer-link" onclick="navigate('graveyard')">Graveyard</button>
-      <button class="footer-link" onclick="openModal()">Submit</button>
-    </div>
-    <div class="footer-copy">© 2026 StartupGrave — Documenting failure so the next generation can succeed.</div>
-  </footer>
-</div>
+    <section class="home-cta-section">
+      <div class="section-label">Ready to Contribute?</div>
+      <h2 class="home-cta-title">Share Your Failure Story</h2>
+      <p class="home-cta-sub">If you've built and lost, your experience is more valuable than any success story. Help
+        future founders avoid the pitfalls you faced.</p>
+      <div class="home-cta-buttons">
+        <button class="btn-primary" onclick="openModal()">Submit a Post-Mortem</button>
+        <button class="btn-secondary" onclick="navigate('graveyard')">Browse the Graveyard</button>
+      </div>
+    </section>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModalOut(event)">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-eyebrow">Anonymous · Verified · Published</div>
-    <h2 class="modal-title">Submit a Failure</h2>
-    <p class="modal-sub">Help the next generation of founders learn. All submissions can be fully anonymous.</p>
-    <div class="form-group"><label class="form-label">Company Name</label><input type="text" class="form-input" placeholder="e.g. MyCoolStartup"></div>
-    <div class="form-group"><label class="form-label">Industry</label>
-      <select class="form-input"><option>Select category…</option><option>SaaS / Software</option><option>E-Commerce</option><option>Health Tech</option><option>FinTech</option><option>Hardware</option><option>Consumer</option><option>Other</option></select>
-    </div>
-    <div class="form-group"><label class="form-label">Founded → Closed</label><input type="text" class="form-input" placeholder="e.g. 2018 — 2022"></div>
-    <div class="form-group"><label class="form-label">The Hype — What did you promise?</label><textarea class="form-textarea" placeholder="What was the vision?"></textarea></div>
-    <div class="form-group"><label class="form-label">The Mistake — What went wrong?</label><textarea class="form-textarea" placeholder="What were the critical errors?"></textarea></div>
-    <div class="form-group"><label class="form-label">What I'd Do Differently</label><textarea class="form-textarea" placeholder="Your wisdom for the next founder…"></textarea></div>
-    <div class="form-group"><label class="form-anon"><input type="checkbox" checked> Submit anonymously</label></div>
-    <button class="form-submit" onclick="submitForm()">Submit to the Graveyard</button>
+    <footer>
+      <div class="footer-logo">STARTUP<span>GRAVE</span></div>
+      <div class="footer-links">
+        <button class="footer-link" onclick="navigate('home')">Home</button>
+        <button class="footer-link" onclick="navigate('graveyard')">Graveyard</button>
+        <button class="footer-link" onclick="openModal()">Submit</button>
+      </div>
+      <div class="footer-copy">© 2026 StartupGrave — Documenting failure so the next generation can succeed. All data
+        sourced from public records and anonymous founder submissions.</div>
+    </footer>
   </div>
-</div>
-<script src="script.js"></script>
+
+  <!-- ═══════════ GRAVEYARD ═══════════ -->
+  <div id="graveyard-page" class="page">
+    <div class="graveyard-hero">
+      <div class="gh-inner">
+        <div class="gh-eyebrow">The Archive</div>
+        <h1 class="gh-title">THE GRAVEYARD</h1>
+      </div>
+      <!-- Search & Filter floated right inside hero -->
+      <div style="position:absolute;bottom:32px;right:60px;display:flex;align-items:center;gap:12px;z-index:2;">
+        <div class="search-box"
+          style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.12);min-width:240px;">
+          <svg viewBox="0 0 24 24" stroke-width="2" style="stroke:rgba(255,255,255,.3)">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input type="text" placeholder="Search company, cause…" id="searchInput" oninput="filterCards()"
+            style="color:white;">
+        </div>
+        <select class="filter-select" id="categoryFilter" onchange="filterCards()"
+          style="background:#1a1a1a;color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.12);">
+          <option value="">All Categories</option>
+          <option value="Real Estate">Real Estate</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Automotive">Automotive</option>
+          <option value="Hardware">Hardware</option>
+          <option value="Health">Health Tech</option>
+          <option value="Retail">Retail</option>
+          <option value="Transport">Transport</option>
+          <option value="Finance">Finance</option>
+          <option value="SaaS">SaaS</option>
+          <option value="Social">Social Media</option>
+          <option value="Food">Food Tech</option>
+        </select>
+        <span class="result-count" id="resultCount" style="color:rgba(255,255,255,.35);">Showing 18 entries</span>
+      </div>
+    </div>
+
+    <!-- TWO-COL LIST -->
+    <div class="gy-list-outer" id="graveyardListOuter">
+      <!-- Rendered by JS -->
+    </div>
+
+    <footer>
+      <div class="footer-logo">STARTUP<span>GRAVE</span></div>
+      <div class="footer-links">
+        <button class="footer-link" onclick="navigate('home')">Home</button>
+        <button class="footer-link" onclick="navigate('graveyard')">Graveyard</button>
+        <button class="footer-link" onclick="openModal()">Submit</button>
+      </div>
+      <div class="footer-copy">© 2026 StartupGrave.</div>
+    </footer>
+  </div>
+
+  <!-- ═══════════ ABOUT ═══════════ -->
+  <div id="about-page" class="page">
+
+    <!-- HERO -->
+    <section class="ab-hero">
+      <div class="ab-hero-grid"></div>
+      <div class="ab-hero-glow"></div>
+      <div class="ab-hero-ghost">FAIL</div>
+      <div class="ab-hero-content">
+        <div class="ab-hero-eyebrow">Est. 2024 · Open Archive</div>
+        <h1 class="ab-hero-title">ABOUT<br><span class="ab-dim">STARTUP</span><br>GRAVE</h1>
+        <p class="ab-hero-sub">"The graveyard of ambition is also the library of wisdom. Every failure contains a lesson
+          no business school will teach you."</p>
+        <div class="ab-hero-divider"></div>
+      </div>
+    </section>
+
+    <!-- MISSION -->
+    <section>
+      <div class="ab-mission">
+        <div class="ab-mission-left">
+          <div class="ab-mission-label">Our Mission</div>
+          <h2 class="ab-mission-title">WHY WE DOCUMENT FAILURE</h2>
+          <div class="ab-mission-bar"></div>
+          <div class="ab-mission-text">
+            <p>Every year, thousands of startups raise hundreds of millions of dollars, hire brilliant people, and
+              pursue audacious visions — and then quietly disappear. Their stories are told in press releases and
+              post-mortems that vanish into the internet, leaving the next generation of founders to repeat the same
+              fatal mistakes.</p>
+            <p><strong>StartupGrave exists to change that.</strong> We believe that failure is the most undervalued
+              asset in the startup ecosystem. The lessons embedded in each collapse — the governance failures, the unit
+              economics blindspots, the timing miscalculations — are worth more than any MBA curriculum.</p>
+            <p>We are not here to mock the fallen. We are here to honour them with the only tribute that matters:
+              <strong>making sure their mistakes are never repeated.</strong></p>
+          </div>
+        </div>
+        <div class="ab-mission-right">
+          <div class="ab-mission-card" id="abmc-1">
+            <div class="ab-mc-icon"><svg viewBox="0 0 24 24">
+                <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg></div>
+            <div class="ab-mc-title">Radical Transparency</div>
+            <div class="ab-mc-text">We publish what really happened — not the sanitised version. Real mistakes, real
+              consequences, real lessons.</div>
+          </div>
+          <div class="ab-mission-card" id="abmc-2">
+            <div class="ab-mc-icon"><svg viewBox="0 0 24 24">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg></div>
+            <div class="ab-mc-title">Anonymity First</div>
+            <div class="ab-mc-text">Founders, employees and investors can submit stories completely anonymously. No
+              names, no blame — just truth.</div>
+          </div>
+          <div class="ab-mission-card" id="abmc-3">
+            <div class="ab-mc-icon"><svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="2" y1="12" x2="22" y2="12" />
+                <path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" />
+              </svg></div>
+            <div class="ab-mc-title">Open to All</div>
+            <div class="ab-mc-text">This archive belongs to the founder community. Free to read, free to contribute,
+              forever.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NUMBERS -->
+    <section class="ab-numbers">
+      <div class="ab-numbers-inner">
+        <div class="ab-numbers-header">
+          <div class="ab-numbers-eyebrow">The Scale of Failure</div>
+          <div class="ab-numbers-title">The Graveyard in Numbers</div>
+        </div>
+        <div class="ab-numbers-grid">
+          <div class="ab-num-card" id="abnum-1">
+            <div class="ab-num-value" id="abN1">0</div>
+            <div class="ab-num-label">Companies Documented</div>
+            <div class="ab-num-sub">and counting</div>
+          </div>
+          <div class="ab-num-card" id="abnum-2">
+            <div class="ab-num-value">$<span id="abN2">0</span>B</div>
+            <div class="ab-num-label">Combined Capital Lost</div>
+            <div class="ab-num-sub">investor & founder capital</div>
+          </div>
+          <div class="ab-num-card" id="abnum-3">
+            <div class="ab-num-value" id="abN3">0</div>
+            <div class="ab-num-label">Lessons Extracted</div>
+            <div class="ab-num-sub">from every postmortem</div>
+          </div>
+          <div class="ab-num-card" id="abnum-4">
+            <div class="ab-num-value" id="abN4">0</div>
+            <div class="ab-num-label">Industries Covered</div>
+            <div class="ab-num-sub">from SaaS to hardware</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="ab-how">
+      <div class="ab-how-inner">
+        <div class="ab-how-header">
+          <div class="ab-how-eyebrow">The Process</div>
+          <div class="ab-how-title">How We Work</div>
+        </div>
+        <div class="ab-how-grid">
+          <div class="ab-how-step" id="abhow-1">
+            <div class="ab-how-step-num">01</div>
+            <div class="ab-how-step-icon"><svg viewBox="0 0 24 24">
+                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg></div>
+            <div class="ab-how-step-title">Submit a Story</div>
+            <div class="ab-how-step-text">Founders, employees, and investors submit failure stories through our
+              anonymous intake form. No attribution required — only honesty.</div>
+          </div>
+          <div class="ab-how-step" id="abhow-2">
+            <div class="ab-how-step-num">02</div>
+            <div class="ab-how-step-icon"><svg viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg></div>
+            <div class="ab-how-step-title">Research & Verify</div>
+            <div class="ab-how-step-text">We cross-reference submissions against public records, SEC filings, news
+              archives, and court documents to build an accurate picture.</div>
+          </div>
+          <div class="ab-how-step" id="abhow-3">
+            <div class="ab-how-step-num">03</div>
+            <div class="ab-how-step-icon"><svg viewBox="0 0 24 24">
+                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+              </svg></div>
+            <div class="ab-how-step-title">Publish & Preserve</div>
+            <div class="ab-how-step-text">Every entry is structured around The Hype, The Mistake, and What I'd Do
+              Differently — so every lesson is extractable and actionable.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MANIFESTO -->
+    <section class="ab-manifesto">
+      <div class="ab-manifesto-inner">
+        <div class="ab-manifesto-eyebrow">The Manifesto</div>
+        <div class="ab-manifesto-quote" id="abManifesto1">
+          "Failures are finger posts on the road to achievement. Every headstone in this graveyard marks a path someone
+          walked so you don't have to walk it blindly."
+        </div>
+        <div class="ab-manifesto-divider"></div>
+        <div class="ab-manifesto-body" id="abManifesto2">
+          We live in a culture that celebrates the unicorn and erases the carcass. TechCrunch writes about the
+          billion-dollar raise; nobody writes the obituary. <strong>We write the obituary.</strong> Not to punish those
+          who tried, but because every cautionary tale is worth more than a thousand success stories to the next founder
+          staring at a pitch deck at midnight. The startup graveyard is not a place of shame. <strong>It is a library.
+            Use it.</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALUES -->
+    <section class="ab-values">
+      <div class="ab-values-inner">
+        <div class="ab-values-header">
+          <div>
+            <div class="ab-values-eyebrow">What We Stand For</div>
+            <div class="ab-values-title">Our Values</div>
+          </div>
+        </div>
+        <div class="ab-values-grid">
+          <div class="ab-value-item" id="abval-1">
+            <div class="ab-value-num">01</div>
+            <div class="ab-value-content">
+              <div class="ab-value-title">Failure Is Data</div>
+              <div class="ab-value-text">Every collapse contains signal. We treat each failure as a structured dataset —
+                extracting root causes, patterns, and preventable decisions that others can learn from.</div>
+            </div>
+          </div>
+          <div class="ab-value-item" id="abval-2">
+            <div class="ab-value-num">02</div>
+            <div class="ab-value-content">
+              <div class="ab-value-title">No Shame, Only Lessons</div>
+              <div class="ab-value-text">We never mock the fallen. Trying and failing is the most honourable thing a
+                founder can do. We document without judgement and preserve without malice.</div>
+            </div>
+          </div>
+          <div class="ab-value-item" id="abval-3">
+            <div class="ab-value-num">03</div>
+            <div class="ab-value-content">
+              <div class="ab-value-title">Radical Honesty</div>
+              <div class="ab-value-text">Sanitised post-mortems help nobody. We push past the press release narrative to
+                the actual sequence of decisions that led to the end. Uncomfortable truths included.</div>
+            </div>
+          </div>
+          <div class="ab-value-item" id="abval-4">
+            <div class="ab-value-num">04</div>
+            <div class="ab-value-content">
+              <div class="ab-value-title">Community Owned</div>
+              <div class="ab-value-text">This archive is built by the community it serves. Founders, operators, and
+                investors who lived through these stories are its most important contributors.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="ab-cta">
+      <div class="ab-cta-eyebrow">Join the Archive</div>
+      <h2 class="ab-cta-title" id="abCta">KNOW A<br>STORY?</h2>
+      <p class="ab-cta-sub">Every failure deserves to be documented. Submit anonymously and help the next generation of
+        founders learn before they burn.</p>
+      <div class="ab-cta-buttons">
+        <button class="btn-primary" onclick="openModal()">Submit a Failure</button>
+        <button class="btn-secondary" onclick="navigate('graveyard')">Browse the Graveyard</button>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-logo">STARTUP<span>GRAVE</span></div>
+      <div class="footer-links">
+        <button class="footer-link" onclick="navigate('home')">Home</button>
+        <button class="footer-link" onclick="navigate('graveyard')">Graveyard</button>
+        <button class="footer-link" onclick="navigate('about')">About</button>
+      </div>
+      <div class="footer-copy">© 2026 StartupGrave.</div>
+    </footer>
+  </div>
+
+  <!-- ═══════════ DETAIL ═══════════ -->
+  <div id="detail-page" class="page">
+    <div id="detail-progress"></div>
+    <div id="detailHero"></div>
+    <div id="detailBody"></div>
+    <section class="dh-related" id="detailRelated" style="display:none"></section>
+    <footer>
+      <div class="footer-logo">STARTUP<span>GRAVE</span></div>
+      <div class="footer-links">
+        <button class="footer-link" onclick="navigate('home')">Home</button>
+        <button class="footer-link" onclick="navigate('graveyard')">Graveyard</button>
+        <button class="footer-link" onclick="openModal()">Submit</button>
+      </div>
+      <div class="footer-copy">© 2026 StartupGrave — Documenting failure so the next generation can succeed.</div>
+    </footer>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModalOut(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-eyebrow">Anonymous · Verified · Published</div>
+      <h2 class="modal-title">Submit a Failure</h2>
+      <p class="modal-sub">Help the next generation of founders learn. All submissions can be fully anonymous.</p>
+      <div class="form-group"><label class="form-label">Company Name</label><input type="text" class="form-input"
+          placeholder="e.g. MyCoolStartup"></div>
+      <div class="form-group"><label class="form-label">Industry</label>
+        <select class="form-input">
+          <option>Select category…</option>
+          <option>SaaS / Software</option>
+          <option>E-Commerce</option>
+          <option>Health Tech</option>
+          <option>FinTech</option>
+          <option>Hardware</option>
+          <option>Consumer</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Founded → Closed</label><input type="text" class="form-input"
+          placeholder="e.g. 2018 — 2022"></div>
+      <div class="form-group"><label class="form-label">The Hype — What did you promise?</label><textarea
+          class="form-textarea" placeholder="What was the vision?"></textarea></div>
+      <div class="form-group"><label class="form-label">The Mistake — What went wrong?</label><textarea
+          class="form-textarea" placeholder="What were the critical errors?"></textarea></div>
+      <div class="form-group"><label class="form-label">What I'd Do Differently</label><textarea class="form-textarea"
+          placeholder="Your wisdom for the next founder…"></textarea></div>
+      <div class="form-group"><label class="form-anon"><input type="checkbox" checked> Submit anonymously</label></div>
+      <button class="form-submit" onclick="submitForm()">Submit to the Graveyard</button>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Custom script to transform the graveyard list into a gallery slider
+    document.addEventListener("DOMContentLoaded", () => {
+      const listOuter = document.getElementById('graveyardListOuter');
+      let currentIndex = 0;
+      let initialized = false;
+
+      // Inject Slider Styles
+      const style = document.createElement('style');
+      style.textContent = `
+      #graveyardListOuter {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        scroll-snap-type: x mandatory !important;
+        scroll-behavior: smooth;
+        gap: 0 !important;
+        padding: 0 !important;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+      }
+      #graveyardListOuter::-webkit-scrollbar {
+        display: none;
+      }
+      #graveyardListOuter .gy-entry {
+        flex: 0 0 100% !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        scroll-snap-align: center !important;
+        border-radius: 0 !important;
+        border-left: none !important;
+        border-right: none !important;
+        transform: none !important;
+        box-shadow: none !important;
+      }
+      #graveyardListOuter .gy-entry:hover {
+        border-color: var(--border) !important;
+      }
+      #graveyardListOuter .gy-entry-img-wrap {
+        /* Make it banner-like for the slider */
+        aspect-ratio: 21 / 9 !important;
+      }
+      #graveyardListOuter .gy-entry:hover .gy-entry-bg {
+        transform: none !important;
+      }
+      /* Optional: hide hover reveal in slider so it stays clean */
+      #graveyardListOuter .gy-entry-more {
+        max-height: 400px !important;
+        opacity: 1 !important;
+        margin-top: 18px !important;
+        padding-top: 18px !important;
+        border-top: 1px solid rgba(0,0,0,0.06) !important;
+      }
+      .gallery-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        padding: 20px 0 80px;
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .gallery-btn {
+        padding: 14px 32px;
+        background: var(--black);
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        transition: background .3s ease, transform .2s ease;
+      }
+      .gallery-btn:hover {
+        background: var(--red);
+        transform: translateY(-2px);
+      }
+      .gallery-indicator {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 28px;
+        color: var(--black);
+        letter-spacing: 0.1em;
+        min-width: 100px;
+        text-align: center;
+      }
+    `;
+      document.head.appendChild(style);
+
+      // Create Controls
+      const controls = document.createElement('div');
+      controls.className = 'gallery-controls';
+
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'gallery-btn';
+      prevBtn.innerHTML = '← Prev';
+
+      const indicator = document.createElement('div');
+      indicator.className = 'gallery-indicator';
+      indicator.textContent = '0 / 0';
+
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'gallery-btn';
+      nextBtn.innerHTML = 'Next →';
+
+      controls.appendChild(prevBtn);
+      controls.appendChild(indicator);
+      controls.appendChild(nextBtn);
+
+      // Insert controls right after the graveyardListOuter
+      listOuter.parentNode.insertBefore(controls, listOuter.nextSibling);
+
+      // Logic to sync and control gallery
+      const updateGallery = () => {
+        const entries = Array.from(listOuter.querySelectorAll('.gy-entry')).filter(e => e.style.display !== 'none');
+        if (entries.length === 0) {
+          indicator.textContent = '0 / 0';
+          return;
+        }
+        // Hide load more button
+        const loadMore = document.querySelector('.gy-load-more-wrap');
+        if (loadMore) loadMore.style.display = 'none';
+
+        // Clamp index
+        if (currentIndex >= entries.length) currentIndex = 0;
+        if (currentIndex < 0) currentIndex = entries.length - 1;
+
+        indicator.textContent = (currentIndex + 1) + ' / ' + entries.length;
+
+        // Scroll to current
+        listOuter.scrollTo({
+          left: entries[currentIndex].offsetLeft - listOuter.offsetLeft,
+          behavior: 'smooth'
+        });
+      };
+
+      // Scroll listener to update indicator if user scrolls manually (touch swiping)
+      let scrollTimeout;
+      listOuter.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          const entries = Array.from(listOuter.querySelectorAll('.gy-entry')).filter(e => e.style.display !== 'none');
+          if (entries.length === 0) return;
+          const scrollX = listOuter.scrollLeft;
+          const width = listOuter.offsetWidth;
+          const newIndex = Math.round(scrollX / width);
+          if (newIndex !== currentIndex && newIndex >= 0 && newIndex < entries.length) {
+            currentIndex = newIndex;
+            indicator.textContent = (currentIndex + 1) + ' / ' + entries.length;
+          }
+        }, 50);
+      });
+
+      prevBtn.onclick = () => {
+        const entries = Array.from(listOuter.querySelectorAll('.gy-entry')).filter(e => e.style.display !== 'none');
+        if (entries.length === 0) return;
+        currentIndex = (currentIndex - 1 + entries.length) % entries.length;
+        updateGallery();
+      };
+
+      nextBtn.onclick = () => {
+        const entries = Array.from(listOuter.querySelectorAll('.gy-entry')).filter(e => e.style.display !== 'none');
+        if (entries.length === 0) return;
+        currentIndex = (currentIndex + 1) % entries.length;
+        updateGallery();
+      };
+
+      // Observe changes inside graveyardListOuter (e.g. initial render or filtering)
+      const observer = new MutationObserver(() => {
+        currentIndex = 0;
+        updateGallery();
+      });
+      observer.observe(listOuter, { childList: true });
+
+      // Initial trigger: script.js might be delayed slightly
+      const checkInterval = setInterval(() => {
+        if (listOuter.querySelector('.gy-entry')) {
+          clearInterval(checkInterval);
+          if (!initialized) {
+            initialized = true;
+            updateGallery();
+          }
+        }
+      }, 100);
+    });
+  </script>
 </body>
+
 </html>
 <!-- git commit test comment mann -->

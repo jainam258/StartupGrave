@@ -561,24 +561,7 @@ function renderCards(data) {
         return;
     }
 
-    const half = Math.ceil(data.length / 2);
-    const leftData = data.slice(0, half);
-    const rightData = data.slice(half);
-
-    // LEFT column
-    const leftCol = document.createElement('div');
-    leftCol.className = 'gy-list-col';
-    leftCol.innerHTML = `<div class="gy-col-header">Recent Failures</div>`;
-    leftData.forEach((s, i) => leftCol.appendChild(buildListEntry(s, i)));
-
-    // RIGHT column
-    const rightCol = document.createElement('div');
-    rightCol.className = 'gy-list-col';
-    rightCol.innerHTML = `<div class="gy-col-header">More Collapses</div>`;
-    rightData.forEach((s, i) => rightCol.appendChild(buildListEntry(s, i + half)));
-
-    outer.appendChild(leftCol);
-    outer.appendChild(rightCol);
+    data.forEach((s, i) => outer.appendChild(buildListEntry(s, i)));
 
     // Hook cursor hover
     outer.querySelectorAll('.gy-entry').forEach(el => ah(el));
@@ -592,25 +575,19 @@ function buildListEntry(s, delay) {
     entry.style.animation = `fadeUp .5s ${delay * .05}s both`;
 
     entry.innerHTML = `
-    <div class="gy-entry-thumb">
-      <img src="${imgUrl}" alt="${s.name}" />
-      <div class="gy-entry-thumb-letter">${s.letter}</div>
-    </div>
-    <div class="gy-entry-content">
-      <div class="gy-entry-meta">${s.categoryLabel}<span class="gy-entry-meta-sep">•</span>${s.years}</div>
-      <div class="gy-entry-name">${s.name}</div>
-      <div class="gy-entry-desc">${s.description}</div>
-      <div class="gy-entry-footer">
-        <div class="gy-entry-cause">
-          <div class="gy-cause-dot"></div>
-          <div class="gy-cause-label">${s.cause}</div>
-        </div>
-        <div class="gy-entry-amount">${s.fundingLost} lost</div>
+      <div class="gy-entry-img-wrap">
+        <img src="${imgUrl}" alt="${s.name}" class="gy-entry-bg" />
       </div>
-    </div>
-    <div class="gy-bookmark">
-      <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
-    </div>`;
+      <div class="gy-entry-content">
+        <div class="gy-entry-name">${s.name}</div>
+        <div class="gy-entry-meta">${s.categoryLabel} &middot; ${s.years}</div>
+        <div class="gy-entry-more">
+            <div class="gy-entry-cause">${s.cause}</div>
+            <div class="gy-entry-lost">Lost: ${s.fundingLost}</div>
+            <div class="gy-entry-desc">${s.description}</div>
+        </div>
+      </div>
+    `;
 
     entry.addEventListener('click', () => showDetail(s.id));
     return entry;
