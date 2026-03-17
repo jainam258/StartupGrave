@@ -11,6 +11,12 @@
     rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script>
+    const savedTheme = localStorage.getItem('sg_theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  </script>
 </head>
 
 <body>
@@ -82,6 +88,22 @@
         </svg>
         Contribute
       </button>
+      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
       <button class="nav-hamburger" id="navHamburger" onclick="toggleMenu()">
         <span></span><span></span><span></span>
       </button>
@@ -91,7 +113,19 @@
   <!-- ═══════════ HOME ═══════════ -->
   <div id="home-page" class="page active">
     <section class="home-hero">
-      <div class="hero-ghost">FAIL</div>
+      <div class="hero-chart-container">
+        <svg class="hero-crash-svg" viewBox="0 0 1200 600" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="crashGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(224, 32, 32, 0.4)" />
+              <stop offset="100%" stop-color="rgba(224, 32, 32, 0)" />
+            </linearGradient>
+          </defs>
+          <path class="chart-grid" d="M0,100 L1200,100 M0,200 L1200,200 M0,300 L1200,300 M0,400 L1200,400 M0,500 L1200,500 M100,0 L100,600 M300,0 L300,600 M500,0 L500,600 M700,0 L700,600 M900,0 L900,600 M1100,0 L1100,600" />
+          <path class="chart-fill" d="M0,200 L150,180 L300,250 L450,120 L600,200 L700,80 L750,450 L850,550 L1000,580 L1200,590 L1200,600 L0,600 Z" />
+          <path class="chart-line" d="M0,200 L150,180 L300,250 L450,120 L600,200 L700,80 L750,450 L850,550 L1000,580 L1200,590" />
+        </svg>
+      </div>
       <div class="hero-eyebrow">Rest in Peace · Est. 2024</div>
       <h1 class="hero-title">The Graveyard<br><span class="dim">of Ambition</span></h1>
       <p class="hero-subtitle">"Failures are finger posts on the road to achievement."</p>

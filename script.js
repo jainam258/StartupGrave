@@ -1330,3 +1330,36 @@ function submitForm() {
     const t = document.createElement('div'); t.className = 'toast'; t.textContent = '✓ Submitted — thank you for contributing to the graveyard.';
     document.body.appendChild(t); setTimeout(() => t.remove(), 4000);
 }
+
+// THEME TOGGLE
+function toggleTheme() {
+    const root = document.documentElement;
+    const currentTheme = root.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    root.setAttribute('data-theme', newTheme);
+    localStorage.setItem('sg_theme', newTheme);
+    
+    // Update icons
+    const moon = document.querySelector('.theme-toggle .moon-icon');
+    const sun = document.querySelector('.theme-toggle .sun-icon');
+    
+    if (newTheme === 'dark') {
+        if (moon) moon.style.display = 'none';
+        if (sun) sun.style.display = 'block';
+    } else {
+        if (moon) moon.style.display = 'block';
+        if (sun) sun.style.display = 'none';
+    }
+}
+
+// Set initial icon state on load
+document.addEventListener('DOMContentLoaded', () => {
+    const root = document.documentElement;
+    if (root.getAttribute('data-theme') === 'dark') {
+        const moon = document.querySelector('.theme-toggle .moon-icon');
+        const sun = document.querySelector('.theme-toggle .sun-icon');
+        if (moon) moon.style.display = 'none';
+        if (sun) sun.style.display = 'block';
+    }
+});
