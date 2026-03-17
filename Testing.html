@@ -9,14 +9,11 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Syne:wght@400;600;700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="testing-styles.css">
   <link rel="icon" type="image/png" href="assets/favicon.png">
 </head>
 
 <body>
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
-
   <!-- NAV OVERLAY (full-screen menu) -->
   <div class="nav-overlay" id="navOverlay">
     <div class="nav-overlay-inner" style="display:grid;grid-template-columns:1fr 1fr;gap:60px;padding:100px 60px 60px;">
@@ -127,6 +124,201 @@
     <div class="marquee-section">
       <div class="marquee-track" id="marqueeTrack"></div>
     </div>
+
+    <!-- ═══════════ FEATURED FAILURES CAROUSEL ═══════════ -->
+    <section class="home-carousel" id="homeCarousel">
+      <div class="carousel-header">
+        <div class="section-label">Featured Failures</div>
+        <h2 class="section-title">The Biggest Collapses</h2>
+      </div>
+      <div class="carousel-container">
+        <div class="carousel-viewport">
+          <div class="carousel-track" id="carouselTrack">
+
+            <!-- SLIDE 1: WeWork -->
+            <div class="carousel-slide" data-startup-id="wework">
+              <div class="carousel-slide-bg">
+                <img src="assets/backgrounds/wework-bg.jpg" alt="WeWork" />
+                <div class="carousel-slide-overlay"></div>
+              </div>
+              <div class="carousel-slide-content">
+                <div class="carousel-slide-logo">
+                  <img src="assets/logos/wework-logo.png" alt="WeWork logo" />
+                </div>
+                <div class="carousel-slide-info">
+                  <div class="carousel-slide-name">WeWork</div>
+                  <div class="carousel-slide-tagline">Community-adjusted EBITDA couldn't pay the rent.</div>
+                  <div class="carousel-slide-meta">
+                    <span class="carousel-meta-lost">$47 Billion Lost</span>
+                    <span class="carousel-meta-dot">&middot;</span>
+                    <span class="carousel-meta-cause">Unsustainable Business Model</span>
+                  </div>
+                  <button class="carousel-slide-cta" onclick="showDetail('wework')">Read Post-Mortem →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 2: Toys R Us -->
+            <div class="carousel-slide" data-startup-id="toysrus">
+              <div class="carousel-slide-bg">
+                <img src="assets/backgrounds/toysrus-bg.jpg" alt="Toys R Us" />
+                <div class="carousel-slide-overlay"></div>
+              </div>
+              <div class="carousel-slide-content">
+                <div class="carousel-slide-logo">
+                  <img src="assets/logos/toysrus-logo.png" alt="Toys R Us logo" />
+                </div>
+                <div class="carousel-slide-info">
+                  <div class="carousel-slide-name">Toys R Us</div>
+                  <div class="carousel-slide-tagline">Loaded with debt, outrun by Amazon, forgotten by kids.</div>
+                  <div class="carousel-slide-meta">
+                    <span class="carousel-meta-lost">$5 Billion+ Lost</span>
+                    <span class="carousel-meta-dot">&middot;</span>
+                    <span class="carousel-meta-cause">Private Equity Debt Load</span>
+                  </div>
+                  <button class="carousel-slide-cta" onclick="showDetail('toysrus')">Read Post-Mortem →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 3: Quibi -->
+            <div class="carousel-slide" data-startup-id="quibi">
+              <div class="carousel-slide-bg">
+                <img src="assets/backgrounds/quibi-bg.jpg" alt="Quibi" />
+                <div class="carousel-slide-overlay"></div>
+              </div>
+              <div class="carousel-slide-content">
+                <div class="carousel-slide-logo">
+                  <img src="assets/logos/quibi-logo.svg" alt="Quibi logo" />
+                </div>
+                <div class="carousel-slide-info">
+                  <div class="carousel-slide-name">Quibi</div>
+                  <div class="carousel-slide-tagline">$1.75B to discover nobody wanted 10-minute shows on their phone.</div>
+                  <div class="carousel-slide-meta">
+                    <span class="carousel-meta-lost">$1.75 Billion Lost</span>
+                    <span class="carousel-meta-dot">&middot;</span>
+                    <span class="carousel-meta-cause">Wrong Product-Market Fit</span>
+                  </div>
+                  <button class="carousel-slide-cta" onclick="showDetail('quibi')">Read Post-Mortem →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 4: Theranos -->
+            <div class="carousel-slide" data-startup-id="theranos">
+              <div class="carousel-slide-bg">
+                <img src="assets/backgrounds/theranos-bg.jpg" alt="Theranos" />
+                <div class="carousel-slide-overlay"></div>
+              </div>
+              <div class="carousel-slide-content">
+                <div class="carousel-slide-logo">
+                  <img src="assets/logos/theranos-logo.svg" alt="Theranos logo" />
+                </div>
+                <div class="carousel-slide-info">
+                  <div class="carousel-slide-name">Theranos</div>
+                  <div class="carousel-slide-tagline">The most audacious fraud in Silicon Valley history.</div>
+                  <div class="carousel-slide-meta">
+                    <span class="carousel-meta-lost">$900 Million Lost</span>
+                    <span class="carousel-meta-dot">&middot;</span>
+                    <span class="carousel-meta-cause">Fraud &amp; Deception</span>
+                  </div>
+                  <button class="carousel-slide-cta" onclick="showDetail('theranos')">Read Post-Mortem →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 5: Jawbone -->
+            <div class="carousel-slide" data-startup-id="jawbone">
+              <div class="carousel-slide-bg">
+                <img src="assets/backgrounds/jawbone-bg.jpg" alt="Jawbone" />
+                <div class="carousel-slide-overlay"></div>
+              </div>
+              <div class="carousel-slide-content">
+                <div class="carousel-slide-logo">
+                  <img src="assets/logos/jawbone-logo.png" alt="Jawbone logo" />
+                </div>
+                <div class="carousel-slide-info">
+                  <div class="carousel-slide-name">Jawbone</div>
+                  <div class="carousel-slide-tagline">Raised $900M. Sold assets for cents on the dollar.</div>
+                  <div class="carousel-slide-meta">
+                    <span class="carousel-meta-lost">$900 Million Lost</span>
+                    <span class="carousel-meta-dot">&middot;</span>
+                    <span class="carousel-meta-cause">Manufacturing &amp; Competition</span>
+                  </div>
+                  <button class="carousel-slide-cta" onclick="showDetail('jawbone')">Read Post-Mortem →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 6: Zenefits -->
+            <div class="carousel-slide" data-startup-id="zenefits">
+              <div class="carousel-slide-bg">
+                <img src="assets/backgrounds/zenefits-bg.jpg" alt="Zenefits" />
+                <div class="carousel-slide-overlay"></div>
+              </div>
+              <div class="carousel-slide-content">
+                <div class="carousel-slide-logo">
+                  <img src="assets/logos/zenefits-logo.png" alt="Zenefits logo" />
+                </div>
+                <div class="carousel-slide-info">
+                  <div class="carousel-slide-name">Zenefits</div>
+                  <div class="carousel-slide-tagline">Grew 10x per year until compliance destroyed it.</div>
+                  <div class="carousel-slide-meta">
+                    <span class="carousel-meta-lost">$584 Million Lost</span>
+                    <span class="carousel-meta-dot">&middot;</span>
+                    <span class="carousel-meta-cause">Compliance &amp; Culture Failure</span>
+                  </div>
+                  <button class="carousel-slide-cta" onclick="showDetail('zenefits')">Read Post-Mortem →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 7: MoviePass -->
+            <div class="carousel-slide" data-startup-id="moviepass">
+              <div class="carousel-slide-bg">
+                <img src="assets/backgrounds/moviepass-bg.jpg" alt="MoviePass" />
+                <div class="carousel-slide-overlay"></div>
+              </div>
+              <div class="carousel-slide-content">
+                <div class="carousel-slide-logo">
+                  <img src="assets/logos/moviepass-logo.png" alt="MoviePass logo" />
+                </div>
+                <div class="carousel-slide-info">
+                  <div class="carousel-slide-name">MoviePass</div>
+                  <div class="carousel-slide-tagline">Burning $40M/month, one $9.95 ticket at a time.</div>
+                  <div class="carousel-slide-meta">
+                    <span class="carousel-meta-lost">$400 Million Lost</span>
+                    <span class="carousel-meta-dot">&middot;</span>
+                    <span class="carousel-meta-cause">Broken Unit Economics</span>
+                  </div>
+                  <button class="carousel-slide-cta" onclick="showDetail('moviepass')">Read Post-Mortem →</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Navigation Arrows -->
+        <button class="carousel-arrow carousel-arrow-prev" id="carouselPrev" aria-label="Previous slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="carousel-arrow carousel-arrow-next" id="carouselNext" aria-label="Next slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
+        </button>
+      </div>
+
+      <!-- Dot Indicators -->
+      <div class="carousel-dots" id="carouselDots">
+        <button class="carousel-dot active" data-index="0" aria-label="Slide 1"></button>
+        <button class="carousel-dot" data-index="1" aria-label="Slide 2"></button>
+        <button class="carousel-dot" data-index="2" aria-label="Slide 3"></button>
+        <button class="carousel-dot" data-index="3" aria-label="Slide 4"></button>
+        <button class="carousel-dot" data-index="4" aria-label="Slide 5"></button>
+        <button class="carousel-dot" data-index="5" aria-label="Slide 6"></button>
+        <button class="carousel-dot" data-index="6" aria-label="Slide 7"></button>
+      </div>
+    </section>
 
     <section class="about-section">
       <div class="about-left">
@@ -633,7 +825,7 @@
       <button class="form-submit" onclick="submitForm()">Submit to the Graveyard</button>
     </div>
   </div>
-  <script src="script.js"></script>
+  <script src="testing-script.js"></script>
 </body>
 
 </html>
