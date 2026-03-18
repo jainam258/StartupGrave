@@ -1363,3 +1363,133 @@ document.addEventListener('DOMContentLoaded', () => {
         if (sun) sun.style.display = 'block';
     }
 });
+
+// ═══════════ HOMEPAGE CAROUSEL ═══════════
+(function() {
+    const track = document.getElementById('carouselTrack');
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+    const dotsContainer = document.getElementById('carouselDots');
+    const carousel = document.getElementById('homeCarousel');
+
+    if (!track || !prevBtn || !nextBtn || !dotsContainer) return;
+
+    const slides = track.querySelectorAll('.carousel-slide');
+    const dots = dotsContainer.querySelectorAll('.carousel-dot');
+    const totalSlides = slides.length;
+    let currentIndex = 0;
+    let autoPlayInterval = null;
+
+    function goToSlide(index) {
+        if (index < 0) index = totalSlides - 1;
+        if (index >= totalSlides) index = 0;
+        currentIndex = index;
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+        // Update dots
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === currentIndex);
+        });
+    }
+
+    // Arrow buttons
+    prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goToSlide(currentIndex - 1);
+        resetAutoPlay();
+    });
+
+    nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goToSlide(currentIndex + 1);
+        resetAutoPlay();
+    });
+
+    // Dot clicks
+    dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            const idx = parseInt(dot.getAttribute('data-index'));
+            goToSlide(idx);
+            resetAutoPlay();
+        });
+    });
+
+    // Slide clicks (navigate to detail page)
+    slides.forEach(slide => {
+        slide.addEventListener('click', (e) => {
+            // Don't navigate if clicking the CTA button (it has its own onclick)
+            if (e.target.closest('.carousel-slide-cta')) return;
+            const id = slide.getAttribute('data-startup-id');
+            if (id) showDetail(id);
+        });
+    });
+
+    // Auto-advance
+    function startAutoPlay() {
+        stopAutoPlay();
+        autoPlayInterval = setInterval(() => {
+            goToSlide(currentIndex + 1);
+        }, 5000);
+    }
+
+    function stopAutoPlay() {
+        if (autoPlayInterval) {
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = null;
+        }
+    }
+
+    function resetAutoPlay() {
+        stopAutoPlay();
+        startAutoPlay();
+    }
+
+    // Pause on hover
+    if (carousel) {
+        carousel.addEventListener('mouseenter', stopAutoPlay);
+        carousel.addEventListener('mouseleave', startAutoPlay);
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        // Only trigger when carousel is visible (home page active)
+        const homePage = document.getElementById('home-page');
+        if (!homePage || !homePage.classList.contains('active')) return;
+
+        if (e.key === 'ArrowLeft') {
+            goToSlide(currentIndex - 1);
+            resetAutoPlay();
+        } else if (e.key === 'ArrowRight') {
+            goToSlide(currentIndex + 1);
+            resetAutoPlay();
+        }
+    });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    track.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        stopAutoPlay();
+    }, { passive: true });
+
+    track.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 50) {
+            if (diff > 0) {
+                goToSlide(currentIndex + 1);
+            } else {
+                goToSlide(currentIndex - 1);
+            }
+        }
+        startAutoPlay();
+    }, { passive: true });
+
+    // Hook cursor hover on carousel elements
+    [prevBtn, nextBtn, ...dots, ...slides].forEach(el => ah(el));
+
+    // Start auto-play
+    startAutoPlay();
+})();
