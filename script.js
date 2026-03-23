@@ -1,4 +1,4 @@
-const startups = [
+﻿const startups = [
     {
         id: 'wework', name: 'WeWork', letter: 'W', years: '2010 — 2023', founded: 2010, closed: 2023, description: 'Coworking office space company that expanded too fast.', tagline: "Community-adjusted EBITDA couldn't pay the rent.", category: 'Real Estate', categoryLabel: 'Real Estate / Workspace', cause: 'Unsustainable Business Model', fundingLost: '$47 Billion', lifetime: '13 Years',
         hype: `WeWork rebranded office leasing as a tech-enabled community movement. Adam Neumann positioned the company as a platform for human elevation, not just coworking space. Backed by SoftBank, it expanded aggressively across the globe, signing long-term leases while renting short-term flexible desks. Investors bought into the narrative that WeWork was a tech disruptor rather than a real estate company.`,
@@ -594,8 +594,8 @@ function buildListEntry(s, delay) {
       <div class="gy-entry-img-wrap">
         ${s.bgUrl ? `<img src="${s.bgUrl}" alt="${s.name}" class="gy-entry-bg" style="object-fit:cover;" />` : `<img src="${imgUrl}" alt="${s.name}" class="gy-entry-bg" />`}
         <div class="gy-entry-img-overlay"></div>
-        ${s.logoUrl 
-            ? `<div class="gy-entry-logo-img-box"><img src="${s.logoUrl}" alt="${s.name} logo" style="max-width:80%;max-height:80%;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.5));" /></div>` 
+        ${s.logoUrl
+            ? `<div class="gy-entry-logo-img-box"><img src="${s.logoUrl}" alt="${s.name} logo" style="max-width:80%;max-height:80%;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.5));" /></div>`
             : ``}
       </div>
       <div class="gy-entry-content">
@@ -1002,10 +1002,10 @@ function showDetail(id) {
     heroEl.innerHTML = '';
     const hero = document.createElement('section');
     hero.className = 'dh-hero';
-    
+
     // Check if we have an image background, otherwise fallback to canvas
-    const heroBgHTML = s.bgUrl 
-        ? `<div class="dh-bg-img" style="position:absolute;inset:0;background-image:url(${s.bgUrl});background-size:cover;background-position:center;z-index:0;opacity:0.6;"></div>` 
+    const heroBgHTML = s.bgUrl
+        ? `<div class="dh-bg-img" style="position:absolute;inset:0;background-image:url(${s.bgUrl});background-size:cover;background-position:center;z-index:0;opacity:0.6;"></div>`
         : `<div class="dh-canvas" id="dhCanvas"></div>`;
 
     hero.innerHTML = `
@@ -1024,9 +1024,9 @@ function showDetail(id) {
       </div>
       <div class="dh-name-row">
         <div class="dh-logo-box" style="${BRAND_CFG[id] ? `background:${BRAND_CFG[id].bg[0]};border-color:${BRAND_CFG[id].accent}55` : ''}; ${s.logoUrl ? 'background:transparent;border:none;' : ''}">
-          ${s.logoUrl 
-                ? `<img src="${s.logoUrl}" alt="${s.name} logo" style="max-width:100px;max-height:60px;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.5));" />` 
-                : `<span style="${BRAND_CFG[id] ? `color:${BRAND_CFG[id].accent};font-family:'Bebas Neue',sans-serif;font-size:38px` : ''}">${s.letter}</span>`}
+          ${s.logoUrl
+            ? `<img src="${s.logoUrl}" alt="${s.name} logo" style="max-width:100px;max-height:60px;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.5));" />`
+            : `<span style="${BRAND_CFG[id] ? `color:${BRAND_CFG[id].accent};font-family:'Bebas Neue',sans-serif;font-size:38px` : ''}">${s.letter}</span>`}
         </div>
         <h1 class="dh-company-name">${s.name.toUpperCase()}</h1>
       </div>
@@ -1058,12 +1058,12 @@ function showDetail(id) {
       <span>Scroll</span>
     </div>`;
     heroEl.appendChild(hero);
-    
+
     // Only build canvas if we aren't using an image background
     if (!s.bgUrl) {
         buildHeroCanvas(document.getElementById('dhCanvas'), s);
     }
-    
+
     document.getElementById('dhBackBtn').addEventListener('click', () => navigate('graveyard'));
 
     // ── BODY ──
@@ -1336,14 +1336,14 @@ function toggleTheme() {
     const root = document.documentElement;
     const currentTheme = root.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
+
     root.setAttribute('data-theme', newTheme);
     localStorage.setItem('sg_theme', newTheme);
-    
+
     // Update icons
     const moon = document.querySelector('.theme-toggle .moon-icon');
     const sun = document.querySelector('.theme-toggle .sun-icon');
-    
+
     if (newTheme === 'dark') {
         if (moon) moon.style.display = 'none';
         if (sun) sun.style.display = 'block';
