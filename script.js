@@ -1,4 +1,4 @@
-﻿const startups = [
+const startups = [
     {
         id: 'wework', name: 'WeWork', letter: 'W', years: '2010 — 2023', founded: 2010, closed: 2023, description: 'Coworking office space company that expanded too fast.', tagline: "Community-adjusted EBITDA couldn't pay the rent.", category: 'Real Estate', categoryLabel: 'Real Estate / Workspace', cause: 'Unsustainable Business Model', fundingLost: '$47 Billion', lifetime: '13 Years',
         hype: `WeWork rebranded office leasing as a tech-enabled community movement. Adam Neumann positioned the company as a platform for human elevation, not just coworking space. Backed by SoftBank, it expanded aggressively across the globe, signing long-term leases while renting short-term flexible desks. Investors bought into the narrative that WeWork was a tech disruptor rather than a real estate company.`,
@@ -1366,13 +1366,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ═══════════ HOMEPAGE CAROUSEL ═══════════
 (function() {
+    const viewport = document.getElementById('carouselViewport');
     const track = document.getElementById('carouselTrack');
-    const prevBtn = document.getElementById('carouselPrev');
-    const nextBtn = document.getElementById('carouselNext');
     const dotsContainer = document.getElementById('carouselDots');
     const carousel = document.getElementById('homeCarousel');
+    const btnPrev = document.getElementById('carouselPrev');
+    const btnNext = document.getElementById('carouselNext');
 
-    if (!track || !prevBtn || !nextBtn || !dotsContainer) return;
+    if (!viewport || !track || !dotsContainer) return;
 
     const slides = track.querySelectorAll('.carousel-slide');
     const dots = dotsContainer.querySelectorAll('.carousel-dot');
@@ -1380,51 +1381,74 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentIndex = 0;
     let autoPlayInterval = null;
 
-    function goToSlide(index) {
-        if (index < 0) index = totalSlides - 1;
-        if (index >= totalSlides) index = 0;
-        currentIndex = index;
-        track.style.transform = `translateX(-${currentIndex * 100}%)`;
-
-        // Update dots
+    function updateActiveState() {
+        slides.forEach((slide, i) => {
+            if (i === currentIndex) {
+                slide.classList.add('is-visible');
+            } else {
+                slide.classList.remove('is-visible');
+            }
+        });
         dots.forEach((dot, i) => {
             dot.classList.toggle('active', i === currentIndex);
         });
     }
 
-    // Arrow buttons
-    prevBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        goToSlide(currentIndex - 1);
-        resetAutoPlay();
+    function goToSlide(index) {
+        if (index < 0) index = totalSlides - 1;
+        if (index >= totalSlides) index = 0;
+        currentIndex = index;
+        
+        viewport.scrollTo({
+            left: currentIndex * viewport.clientWidth,
+            behavior: 'smooth'
+        });
+        updateActiveState();
+    }
+
+    let scrollTimeout;
+    viewport.addEventListener('scroll', () => {
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            const width = viewport.clientWidth;
+            if(width === 0) return;
+            const index = Math.round(viewport.scrollLeft / width);
+            if (index !== currentIndex && index >= 0 && index < totalSlides) {
+                currentIndex = index;
+                updateActiveState();
+                resetAutoPlay();
+            }
+        }, 50);
     });
 
-    nextBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        goToSlide(currentIndex + 1);
-        resetAutoPlay();
-    });
-
-    // Dot clicks
     dots.forEach(dot => {
-        dot.addEventListener('click', () => {
+        dot.addEventListener('click', (e) => {
+            e.stopPropagation();
             const idx = parseInt(dot.getAttribute('data-index'));
             goToSlide(idx);
             resetAutoPlay();
         });
     });
 
-    // Slide clicks (navigate to detail page)
+    if (btnPrev) {
+        btnPrev.addEventListener('click', () => { goToSlide(currentIndex - 1); resetAutoPlay(); });
+    }
+    if (btnNext) {
+        btnNext.addEventListener('click', () => { goToSlide(currentIndex + 1); resetAutoPlay(); });
+    }
+
     slides.forEach(slide => {
         slide.addEventListener('click', (e) => {
-            // Don't navigate if clicking the CTA button (it has its own onclick)
             if (e.target.closest('.carousel-slide-cta')) return;
             const id = slide.getAttribute('data-startup-id');
-            if (id) showDetail(id);
+            if (id) {
+                if (typeof showDetail === 'function') {
+                    showDetail(id);
+                }
+            }
         });
     });
 
-    // Auto-advance
     function startAutoPlay() {
         stopAutoPlay();
         autoPlayInterval = setInterval(() => {
@@ -1444,18 +1468,15 @@ document.addEventListener('DOMContentLoaded', () => {
         startAutoPlay();
     }
 
-    // Pause on hover
     if (carousel) {
         carousel.addEventListener('mouseenter', stopAutoPlay);
         carousel.addEventListener('mouseleave', startAutoPlay);
     }
 
-    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
-        // Only trigger when carousel is visible (home page active)
         const homePage = document.getElementById('home-page');
         if (!homePage || !homePage.classList.contains('active')) return;
-
+        
         if (e.key === 'ArrowLeft') {
             goToSlide(currentIndex - 1);
             resetAutoPlay();
@@ -1465,31 +1486,197 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Touch swipe support
-    let touchStartX = 0;
-    let touchEndX = 0;
+    if (typeof ah === 'function') {
+        [...dots].forEach(el => ah(el));
+        if (btnPrev) ah(btnPrev);
+        if (btnNext) ah(btnNext);
+    }
 
-    track.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-        stopAutoPlay();
-    }, { passive: true });
-
-    track.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        const diff = touchStartX - touchEndX;
-        if (Math.abs(diff) > 50) {
-            if (diff > 0) {
-                goToSlide(currentIndex + 1);
-            } else {
-                goToSlide(currentIndex - 1);
-            }
-        }
-        startAutoPlay();
-    }, { passive: true });
-
-    // Hook cursor hover on carousel elements
-    [prevBtn, nextBtn, ...dots, ...slides].forEach(el => ah(el));
-
-    // Start auto-play
+    updateActiveState();
     startAutoPlay();
 })();
+
+// ═══════════ CRASHING STOCK GRAPH (Canvas) ═══════════
+(function () {
+    const canvas = document.getElementById('heroCrashCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    let W, H;
+    function resize() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        W = canvas.width = rect.width * window.devicePixelRatio;
+        H = canvas.height = rect.height * window.devicePixelRatio;
+        canvas.style.width = rect.width + 'px';
+        canvas.style.height = rect.height + 'px';
+        ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function lw() { return W / window.devicePixelRatio; }
+    function lh() { return H / window.devicePixelRatio; }
+
+    const STEP = 4;
+    let yValues = [];
+    let currentY;
+    let tipX = 0; // Current peak/tip X position
+    let isCentered = false;
+
+    function initGraph() {
+        yValues = [];
+        currentY = lh() * 0.2;
+        yValues.push(currentY);
+        tipX = 0;
+        isCentered = false;
+    }
+    initGraph();
+
+    function nextY() {
+        const h = lh();
+        // Constant downward pressure
+        let dy = (Math.random() * 3.5 + 1.0);
+
+        // Volatility
+        if (Math.random() < 0.25) dy = -(Math.random() * 3.0);
+        if (Math.random() < 0.04) dy = Math.random() * 18 + 10; // Sharp drop
+        if (Math.random() < 0.07) dy = -(Math.random() * 8 + 3);  // Bounce
+
+        currentY += dy;
+
+        // Soft Reset / Stay in frame: instead of jumping, pull it back up gently if too low
+        if (currentY > h * 0.9) {
+            currentY -= (Math.random() * 20 + 15);
+        }
+
+        currentY = Math.max(h * 0.05, Math.min(h * 0.95, currentY));
+        return currentY;
+    }
+
+    function drawDotGrid() {
+        const w = lw(), h = lh();
+        const spacing = 40;
+        ctx.fillStyle = 'rgba(255, 34, 0, 0.06)';
+        for (let x = spacing / 2; x < w; x += spacing) {
+            for (let y = spacing / 2; y < h; y += spacing) {
+                ctx.beginPath();
+                ctx.arc(x, y, 1.2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+    }
+
+    let pulsePhase = 0;
+    let frameCount = 0;
+
+    function draw() {
+        const w = lw(), h = lh();
+        const centerX = w / 2;
+
+        frameCount++;
+        if (frameCount % 2 === 0) {
+            const newVal = nextY();
+            yValues.push(newVal);
+
+            if (!isCentered) {
+                tipX += STEP;
+                if (tipX >= centerX) {
+                    tipX = centerX;
+                    isCentered = true;
+                }
+            } else {
+                // Scrolling mode: keep tipX at center, remove oldest point
+                if (yValues.length * STEP > centerX) {
+                    yValues.shift();
+                }
+            }
+        }
+
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = '#0a0a0a';
+        ctx.fillRect(0, 0, w, h);
+
+        drawDotGrid();
+
+        if (yValues.length < 2) {
+            requestAnimationFrame(draw);
+            return;
+        }
+
+        ctx.save();
+
+        const len = yValues.length;
+        // Tip is at tipX. Each previous point j is at x = tipX - (len - 1 - j) * STEP
+        function xAt(j) {
+            return tipX - (len - 1 - j) * STEP;
+        }
+
+        // 1. Gradient Fill (Stronger)
+        ctx.beginPath();
+        ctx.moveTo(xAt(0), yValues[0]);
+        for (let j = 1; j < len; j++) {
+            ctx.lineTo(xAt(j), yValues[j]);
+        }
+        ctx.lineTo(tipX, h);
+        ctx.lineTo(xAt(0), h);
+        ctx.closePath();
+
+        const grad = ctx.createLinearGradient(0, 0, 0, h);
+        grad.addColorStop(0, 'rgba(255, 34, 0, 0.45)');
+        grad.addColorStop(0.6, 'rgba(255, 34, 0, 0.1)');
+        grad.addColorStop(1, 'rgba(255, 34, 0, 0)');
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // 2. Main Stroke (Thicker & Brighter)
+        ctx.beginPath();
+        ctx.moveTo(xAt(0), yValues[0]);
+        for (let j = 1; j < len; j++) {
+            ctx.lineTo(xAt(j), yValues[j]);
+        }
+
+        ctx.strokeStyle = '#ff2200';
+        ctx.lineWidth = 4.5;
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        ctx.shadowBlur = 38;
+        ctx.shadowColor = '#ff2200';
+        ctx.stroke();
+
+        // Extra Glow Pass
+        ctx.shadowBlur = 60;
+        ctx.shadowColor = 'rgba(255, 30, 0, 0.5)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.shadowBlur = 0;
+
+        // 3. Pulsing tip dot
+        const tipY = yValues[len - 1];
+        pulsePhase += 0.08;
+        const pulseR = 6 + Math.sin(pulsePhase) * 3;
+        const pulseAlpha = 0.6 + Math.sin(pulsePhase) * 0.4;
+
+        const dotGlow = ctx.createRadialGradient(tipX, tipY, 0, tipX, tipY, pulseR * 5);
+        dotGlow.addColorStop(0, `rgba(255, 40, 0, ${pulseAlpha * 0.6})`);
+        dotGlow.addColorStop(1, 'rgba(255, 40, 0, 0)');
+        ctx.beginPath();
+        ctx.arc(tipX, tipY, pulseR * 5, 0, Math.PI * 2);
+        ctx.fillStyle = dotGlow;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(tipX, tipY, pulseR, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 60, 20, ${pulseAlpha})`;
+        ctx.shadowBlur = 25;
+        ctx.shadowColor = '#ff2200';
+        ctx.fill();
+
+        ctx.restore();
+        requestAnimationFrame(draw);
+    }
+
+    draw();
+})();
+
+
