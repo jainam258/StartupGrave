@@ -1593,8 +1593,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         ctx.clearRect(0, 0, w, h);
-        ctx.fillStyle = '#0a0a0a';
-        ctx.fillRect(0, 0, w, h);
 
         drawDotGrid();
 

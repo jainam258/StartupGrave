@@ -32,6 +32,9 @@
     --hero-bg: var(--white);
     --hero-text: var(--black);
     --hero-subtitle: var(--gray);
+    --hero-vignette-1: rgba(255, 255, 255, 0.65);
+    --hero-vignette-2: rgba(255, 255, 255, 0.95);
+    --hero-title-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
     --chart-grid: rgba(0, 0, 0, 0.05);
 }
 
@@ -50,6 +53,9 @@
     --hero-bg: #050505;
     --hero-text: var(--white);
     --hero-subtitle: rgba(255, 255, 255, 0.6);
+    --hero-vignette-1: rgba(10, 10, 10, 0.65);
+    --hero-vignette-2: rgba(10, 10, 10, 0.95);
+    --hero-title-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
     --chart-grid: rgba(255, 255, 255, 0.03);
 }
 
@@ -598,7 +604,7 @@ nav.scrolled {
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    background: radial-gradient(ellipse at center, transparent 30%, rgba(10, 10, 10, 0.65) 70%, rgba(10, 10, 10, 0.95) 100%);
+    background: radial-gradient(ellipse at center, transparent 30%, var(--hero-vignette-1) 70%, var(--hero-vignette-2) 100%);
 }
 
 
@@ -676,7 +682,7 @@ nav.scrolled {
 
 .stat-item {
     padding: 36px 28px;
-    border-right: 1px solid rgba(255, 255, 255, .07);
+    border-right: 1px solid var(--border);
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -972,7 +978,7 @@ nav.scrolled {
     position: relative;
     z-index: 5;
     transition: color 0.4s ease;
-    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+    text-shadow: var(--hero-title-shadow);
 }
 
 .hero-title .dim {
@@ -4136,7 +4142,7 @@ footer {
     }
 
     .stat-item:nth-child(3) {
-        border-top: 1px solid rgba(255, 255, 255, .07)
+        border-top: 1px solid var(--border)
     }
 
     .detail-stats-bar {
